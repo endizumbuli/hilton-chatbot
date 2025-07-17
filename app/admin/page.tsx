@@ -1,42 +1,38 @@
-'use client';
+import { createClient } from '@supabase/supabase-js';
 
-import { useEffect, useState } from 'react';
-import { supabase } from '../../utils/supabaseClient';
+const supabase = createClient(
+  process.env.SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY!
+);
 
-export default function AdminPage() {
-  const [requests, setRequests] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+export async function getServerSideProps() {
+  const { data, error } = await supabase
+    .from('guest_requests')
+    .select('*')
+    .order('created_at', { ascending: false })
+    .limit(10);
 
-  useEffect(() => {
-    async function fetchRequests() {
-      const { data, error } = await supabase
-        .from('guest_requests')
-        .select('*')
-        .order('created_at', { ascending: false })
-        .limit(10);
+  return {
+    props: {
+      requests: data || [],
+      error: error?.message || null,
+    },
+  };
+}
 
-      if (error) {
-        console.error('❌ Error fetching requests:', error);
-      } else {
-        setRequests(data || []);
-      }
-
-      setLoading(false);
-    }
-
-    fetchRequests();
-  }, []);
+export default function AdminPage({ requests, error }: any) {
+  if (error) {
+    return <div className="p-6 text-red-500">Error: {error}</div>;
+  }
 
   return (
     <div className="p-6">
       <h1 className="text-2xl font-bold mb-4">Recent Guest Requests</h1>
-      {loading ? (
-        <p>Loading...</p>
-      ) : requests.length === 0 ? (
+      {requests.length === 0 ? (
         <p>No requests yet.</p>
       ) : (
         <ul className="space-y-2">
-          {requests.map((req, index) => (
+          {requests.map((req: any, index: number) => (
             <li key={index} className="p-4 border rounded">
               <p><strong>Room:</strong> {req.room_number}</p>
               <p><strong>Type:</strong> {req.type}</p>
