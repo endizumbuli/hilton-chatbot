@@ -3,7 +3,6 @@ import { createServer, type Server } from "http";
 import { WebSocketServer, WebSocket } from "ws";
 import { storage } from "./storage";
 import { generateConciergeResponse } from "./services/openai";
-import { insertChatMessageSchema } from "./shared/schema";
 import { randomUUID } from "crypto";
 
 export async function registerRoutes(app: Express): Promise<Server> {
