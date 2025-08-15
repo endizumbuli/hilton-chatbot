@@ -1,7 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { WebSocketServer, WebSocket } from "ws";
-import { storage } from "./storage";
+import storage from "./storage";
 import { generateConciergeResponse } from "./services/openai";
 import { randomUUID } from "crypto";
 
