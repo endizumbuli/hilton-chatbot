@@ -5,6 +5,22 @@ type Message = {
   sender: 'user' | 'bot';
   text: string;
 };
+<div
+  style={{
+    position: "sticky",
+    top: 0,
+    zIndex: 10,
+    background: "#1f1bff",
+    color: "white",
+    padding: "14px 16px",
+    borderRadius: 12,
+    margin: "16px 16px 8px 16px",
+    textAlign: "center",
+    fontWeight: 700,
+  }}
+>
+  Chat Concierge
+</div>
 
 export default function Home() {
   const [messages, setMessages] = useState<Message[]>([]);
